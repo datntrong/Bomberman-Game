@@ -12,7 +12,7 @@ public abstract class Entity {
     protected int y;
     protected Image img;
 
-    public Entity( int x, int y, Image img) {
+    public Entity(int x, int y, Image img) {
         this.x = x;
         this.y = y;
         this.img = img;
@@ -25,7 +25,11 @@ public abstract class Entity {
         ImageView iv = new ImageView(img);
         Image base = iv.snapshot(params, null);
 
-        gc.drawImage(base, x * Sprite.SCALED_SIZE, y * Sprite.SCALED_SIZE);
+        if (this instanceof  Bomber) {
+            gc.drawImage(base, x * Sprite.SCALED_SIZE + Bomber._x, y * Sprite.SCALED_SIZE + Bomber._y);
+        } else {
+            gc.drawImage(base, x * Sprite.SCALED_SIZE, y * Sprite.SCALED_SIZE);
+        }
     }
     public abstract void update();
 }
