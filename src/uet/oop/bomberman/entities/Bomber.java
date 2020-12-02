@@ -7,7 +7,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class Bomber extends Entity {
-
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
     }
