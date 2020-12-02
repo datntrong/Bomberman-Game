@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,17 @@ public class BombermanGame extends Application {
     
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
+
+    private static final int BOMBRATE = 1;
+    private static final int BOMBRADIUS = 1;
+    private static final double PLAYERSPEED = 1.0;
+
+    //can be modified with bonus
+    protected static int bombRate = BOMBRATE;
+    protected static int bombRadius = BOMBRADIUS;
+    protected static double playerSpeed = PLAYERSPEED;
+
+    private static Keyboard _input;
     
     private GraphicsContext gc;
     private Canvas canvas;
@@ -40,6 +52,7 @@ public class BombermanGame extends Application {
 
         // Tao scene
         Scene scene = new Scene(root);
+        _input = new Keyboard(scene);
 
         // Them scene vao stage
         stage.setScene(scene);
@@ -77,6 +90,7 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        _input.update();
         entities.forEach(Entity::update);
     }
 
@@ -84,5 +98,13 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+    }
+
+    public static double getPlayerSpeed() {
+        return playerSpeed;
+    }
+
+    public static Keyboard getInput() {
+        return _input;
     }
 }
