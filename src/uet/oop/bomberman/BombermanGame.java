@@ -8,16 +8,20 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.exceptions.LoadLevelException;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
+//import uet.oop.bomberman.level.FileLevel;
+//import uet.oop.bomberman.level.Level;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BombermanGame extends Application {
     
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
+    public static final int WIDTH = 31;
+    public static final int HEIGHT = 13;
 
     private static final int BOMBRATE = 1;
     private static final int BOMBRADIUS = 1;
@@ -29,9 +33,10 @@ public class BombermanGame extends Application {
     protected static double playerSpeed = PLAYERSPEED;
 
     private static Keyboard _input;
-    
+    private static Board board;
     private GraphicsContext gc;
     private Canvas canvas;
+
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
 
@@ -53,11 +58,11 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
         _input = new Keyboard(scene);
+        board=new Board(_input,scene);
 
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -69,7 +74,7 @@ public class BombermanGame extends Application {
 
         createMap();
 
-        Entity bomberman = new Player(1, 1, Sprite.player_right.getFxImage());
+        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);
 
     }
@@ -87,16 +92,25 @@ public class BombermanGame extends Application {
                 stillObjects.add(object);
             }
         }
+
+        stillObjects.addAll(Arrays.asList(board._entities));
     }
 
     public void update() {
         _input.update();
         entities.forEach(Entity::update);
+        board.update();
+
+
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
+        stillObjects.forEach(g -> {
+            if (g != null) {
+                g.render(gc);
+            }
+        });
         entities.forEach(g -> g.render(gc));
     }
 
@@ -107,4 +121,6 @@ public class BombermanGame extends Application {
     public static Keyboard getInput() {
         return _input;
     }
+
+
 }

@@ -5,9 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.graphics.IRender;
 import uet.oop.bomberman.graphics.Sprite;
 
-public abstract class Entity {
+public abstract class Entity implements IRender {
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;
 
@@ -27,4 +28,6 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
+
+//    public abstract boolean collide(Entity e);
 }
