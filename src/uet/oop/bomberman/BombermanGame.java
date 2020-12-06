@@ -33,7 +33,7 @@ public class BombermanGame extends Application {
     protected static double playerSpeed = PLAYERSPEED;
 
     private static Keyboard _input;
-    private static Board board;
+    public static Board board;
     private GraphicsContext gc;
     private Canvas canvas;
 
@@ -73,7 +73,6 @@ public class BombermanGame extends Application {
         timer.start();
 
         createMap();
-
         Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);
 

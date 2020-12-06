@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
+import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.exceptions.LoadLevelException;
 import uet.oop.bomberman.graphics.IRender;
@@ -104,5 +105,30 @@ public class Board implements IRender {
         } catch (LoadLevelException e) {
             //endGame(); //failed to load.. so.. no more levels?
         }
+    }
+
+    public Entity getEntity(double x, double y) {
+
+        Entity res = null;
+
+//        res = getExplosionAt((int)x, (int)y);
+//        if( res != null) return res;
+//
+//        res = getBombAt(x, y);
+//        if( res != null) return res;
+//
+//        res = getMobAtExcluding((int)x, (int)y, m);
+//        if( res != null) return res;
+
+        res = getEntityAt((int)x, (int)y);
+
+        return res;
+    }
+
+    public Entity getEntityAt(double x, double y) {
+        return _entities[(int)x + (int)y * _level.getWidth()];
+    }
+    public void addMob(Bomber e) {
+        _mobs.add(e);
     }
 }

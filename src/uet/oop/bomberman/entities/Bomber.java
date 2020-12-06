@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
@@ -16,7 +17,7 @@ public class Bomber extends Entity {
     protected Sprite _sprite;
 
     protected Keyboard _input;
-
+    protected Board _board;
     protected int _animate = 0;
     protected final int MAX_ANIMATE = 60;
 
@@ -24,6 +25,8 @@ public class Bomber extends Entity {
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
         _input = BombermanGame.getInput();
+        _board=BombermanGame.board;
+
     }
 
     @Override
@@ -34,6 +37,11 @@ public class Bomber extends Entity {
 
         chooseSprite();
         img = _sprite.getFxImage();
+    }
+
+    @Override
+    public boolean collide(Entity e) {
+        return true;
     }
 
     protected void calculateMove() {
@@ -53,15 +61,16 @@ public class Bomber extends Entity {
     }
 
     public boolean canMove(double x, double y) {
-//        for (int c = 0; c < 4; c++) { //colision detection for each corner of the player
-//            double xt = ((_x + x) + c % 2 * 11) / 16; //divide with tiles size to pass to tile coordinate
-//            double yt = ((_y + y) + c / 2 * 12 - 13) / 16; //these values are the best from multiple tests
 
-//            Entity a = _board.getEntity(xt, yt, this);
-//
-//            if(!a.collide(this))
-//                return false;
-//        }
+
+        for (int c = 0; c < 4; c++) { //colision detection for each corner of the player
+            double xt = ((_x + x) + c % 2 * 11) / Sprite.TILES_SIZE; //divide with tiles size to pass to tile coordinate
+            double yt = ((_y + y) + c / 2 * 12 - 13) / Sprite.TILES_SIZE; //these values are the best from multiple tests
+
+            Entity a = _board.getEntity(xt, yt);
+            if(!a.collide(this))
+                return false;
+        }
 
         return true;
     }

@@ -29,5 +29,5 @@ public abstract class Entity implements IRender {
     }
     public abstract void update();
 
-//    public abstract boolean collide(Entity e);
+    public abstract boolean collide(Entity e);
 }
