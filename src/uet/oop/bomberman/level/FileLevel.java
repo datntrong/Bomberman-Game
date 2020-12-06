@@ -3,12 +3,14 @@ package uet.oop.bomberman.level;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomber;
+
 import uet.oop.bomberman.entities.LayeredEntity;
-import uet.oop.bomberman.entities.Wall;
-import uet.oop.bomberman.entities.tile.GrassTile;
-import uet.oop.bomberman.entities.tile.PortalTile;
-import uet.oop.bomberman.entities.tile.WallTile;
-import uet.oop.bomberman.entities.tile.destroyable.BrickTile;
+import uet.oop.bomberman.entities.tile.Grass;
+
+import uet.oop.bomberman.entities.tile.Portal;
+import uet.oop.bomberman.entities.tile.Wall;
+import uet.oop.bomberman.entities.tile.destroyable.Brick;
+
 import uet.oop.bomberman.exceptions.LoadLevelException;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -22,7 +24,7 @@ import java.util.StringTokenizer;
 
 public class FileLevel extends Level {
 	public FileLevel(String path, Board board) throws LoadLevelException {
-	    super(path, board);
+		super(path, board);
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class FileLevel extends Level {
 			URL absPath = FileLevel.class.getResource("/" + path);
 
 			BufferedReader in = new BufferedReader(
-			        new InputStreamReader(absPath.openStream()));
+					new InputStreamReader(absPath.openStream()));
 
 			String data = in.readLine();
 			StringTokenizer tokens = new StringTokenizer(data);
@@ -44,7 +46,7 @@ public class FileLevel extends Level {
 
 			for(int i = 0; i < _height; ++i) {
 				_lineTiles[i] = in.readLine().substring(0, _width);
- 			}
+			}
 
 			in.close();
 		} catch (IOException e) {
@@ -64,64 +66,64 @@ public class FileLevel extends Level {
 	public void addLevelEntity(char c, int x, int y) {
 		int pos = x + y * getWidth();
 
-		switch(c) { // TODO: minimize this method
+		switch(c) {
 			case '#':
-				_board.addEntitie(pos, new Wall(x, y, Sprite.wall.getFxImage()));
+				_board.addEntitie(pos, new Wall(x, y, Sprite.wall));
 				break;
-//			case 'b':
-//				LayeredEntity layer = new LayeredEntity(x, y,
-//						new GrassTile(x ,y, Sprite.grass),
-//						new BrickTile(x ,y, Sprite.brick));
-//
+			case 'b':
+
+				LayeredEntity layer = new LayeredEntity(x, y,
+						new Grass(x ,y, Sprite.grass),
+						new Brick(x ,y, Sprite.brick));
+
 //				if(_board.isPowerupUsed(x, y, _level) == false) {
 //					layer.addBeforeTop(new PowerupBombs(x, y, _level, Sprite.powerup_bombs));
 //				}
-//
-//				_board.addEntitie(pos, layer);
-//				break;
-//			case 's':
-//				layer = new LayeredEntity(x, y,
-//						new GrassTile(x ,y, Sprite.grass),
-//						new BrickTile(x ,y, Sprite.brick));
+
+				_board.addEntitie(pos, layer);
+				break;
+			case 's':
+				layer = new LayeredEntity(x, y,
+						new Grass(x ,y, Sprite.grass),
+						new Brick(x ,y, Sprite.brick));
 //
 //				if(_board.isPowerupUsed(x, y, _level) == false) {
 //					layer.addBeforeTop(new PowerupSpeed(x, y, _level, Sprite.powerup_speed));
 //				}
 //
-//				_board.addEntitie(pos, layer);
-//				break;
-//			case 'f':
-//				layer = new LayeredEntity(x, y,
-//						new GrassTile(x ,y, Sprite.grass),
-//						new BrickTile(x ,y, Sprite.brick));
-//
+				_board.addEntitie(pos, layer);
+				break;
+			case 'f':
+				layer = new LayeredEntity(x, y,
+						new Grass(x, y, Sprite.grass),
+						new Brick(x, y, Sprite.brick));
+
 //				if(_board.isPowerupUsed(x, y, _level) == false) {
 //					layer.addBeforeTop(new PowerupFlames(x, y, _level, Sprite.powerup_flames));
 //				}
 //
-//				_board.addEntitie(pos, layer);
-//				break;
-//			case '*':
-////				_board.addEntitie(pos, new LayeredEntity(x, y,
-////						new GrassTile(x, y, Sprite.grass),
-////						new BrickTile(x, y, Sprite.brick)));
-//				break;
-//			case 'x':
-////				_board.addEntitie(pos, new LayeredEntity(x, y,
-////						new GrassTile(x, y, Sprite.grass),
-////						new PortalTile(x, y, _board, Sprite.portal),
-////						new BrickTile(x, y, Sprite.brick)));
-//				break;
-//			case ' ':
-//				_board.addEntitie(pos, new GrassTile(x, y, Sprite.grass) );
-//				break;
-//			case 'p':
-//				_board.addMob( new Bomber(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Sprite.TILES_SIZE, Sprite.player_right.getFxImage()) );
-//
-//
-//				_board.addEntitie(pos, new GrassTile(x, y, Sprite.grass) );
-//				break;
-//			//Enemiesa
+				_board.addEntitie(pos, layer);
+				break;
+			case '*':
+				_board.addEntitie(pos, new LayeredEntity(x, y,
+						new Grass(x, y, Sprite.grass),
+						new Brick(x, y, Sprite.brick)));
+				break;
+			case 'x':
+				_board.addEntitie(pos, new LayeredEntity(x, y,
+						new Grass(x, y, Sprite.grass),
+						new Portal(x, y, _board, Sprite.portal),
+						new Brick(x, y, Sprite.brick)));
+				break;
+			case ' ':
+				_board.addEntitie(pos, new Grass(x, y, Sprite.grass) );
+				break;
+			case 'p':
+				_board.addBomber( new Bomber(x, y, Sprite.player_right.getFxImage(), _board));
+
+				_board.addEntitie(pos, new Grass(x, y, Sprite.grass) );
+				break;
+//			//Enemies
 //			case '1':
 //				_board.addMob( new Balloom(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, _board));
 //				_board.addEntitie(pos, new GrassTile(x, y, Sprite.grass) );
@@ -142,10 +144,9 @@ public class FileLevel extends Level {
 //				_board.addMob( new Kondoria(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, _board));
 //				_board.addEntitie(pos, new GrassTile(x, y, Sprite.grass) );
 //				break;
-//			default:
-//				_board.addEntitie(pos, new GrassTile(x, y, Sprite.grass) );
-//				break;
-//			}
+			default:
+				_board.addEntitie(pos, new Grass(x, y, Sprite.grass) );
+				break;
 		}
 	}
 

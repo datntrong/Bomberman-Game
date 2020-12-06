@@ -8,18 +8,17 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.exceptions.LoadLevelException;
+import uet.oop.bomberman.entities.tile.Grass;
+import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
-//import uet.oop.bomberman.level.FileLevel;
-//import uet.oop.bomberman.level.Level;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class BombermanGame extends Application {
-    
+
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
 
@@ -58,7 +57,7 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
         _input = new Keyboard(scene);
-        board=new Board(_input,scene);
+        board = new Board(_input, scene);
 
         // Them scene vao stage
         stage.setScene(scene);
@@ -72,9 +71,10 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-        createMap();
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
+//        createMap();
+
+//        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+//        entities.add(bomberman);
 
     }
 
@@ -83,34 +83,31 @@ public class BombermanGame extends Application {
             for (int j = 0; j < HEIGHT; j++) {
                 Entity object;
                 if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
+                    object = new Wall(i, j, Sprite.wall);
                 }
                 else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
+                    object = new Grass(i, j, Sprite.grass);
                 }
                 stillObjects.add(object);
             }
         }
 
-        stillObjects.addAll(Arrays.asList(board._entities));
+//        stillObjects.addAll(Arrays.asList(board._entities));
     }
 
     public void update() {
         _input.update();
-        entities.forEach(Entity::update);
-        board.update();
-
-
+        board._mobs.forEach(Entity::update);
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> {
+        board._entities.forEach(g -> {
             if (g != null) {
                 g.render(gc);
             }
         });
-        entities.forEach(g -> g.render(gc));
+        board._mobs.forEach(g -> g.render(gc));
     }
 
     public static double getPlayerSpeed() {
@@ -121,5 +118,7 @@ public class BombermanGame extends Application {
         return _input;
     }
 
-
+    public static Board getBoard() {
+        return board;
+    }
 }

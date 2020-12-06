@@ -10,10 +10,9 @@ import java.util.List;
 
 
 public class Bomber extends Entity {
-//    private List<Bomber> _bombs;
+    //    private List<Bomber> _bombs;
     protected int _direction = -1;
     protected boolean _moving = false;
-    public static double _x, _y;
     protected Sprite _sprite;
 
     protected Keyboard _input;
@@ -22,11 +21,12 @@ public class Bomber extends Entity {
     protected final int MAX_ANIMATE = 60;
 
 
-    public Bomber(int x, int y, Image img) {
-        super(x, y, img);
+    public Bomber(int x, int y, Image img, Board board) {
+        this.x = x * Sprite.SCALED_SIZE;
+        this.y = y * Sprite.SCALED_SIZE;
+        this.img = img;
         _input = BombermanGame.getInput();
-        _board=BombermanGame.board;
-
+        _board = board;
     }
 
     @Override
@@ -60,22 +60,6 @@ public class Bomber extends Entity {
 
     }
 
-    public boolean canMove(double x, double y) {
-
-
-        for (int c = 0; c < 4; c++) { //colision detection for each corner of the player
-            double xt = ((_x + x) + c % 2 * 11) / Sprite.TILES_SIZE; //divide with tiles size to pass to tile coordinate
-            double yt = ((_y + y) + c / 2 * 12 - 13) / Sprite.TILES_SIZE; //these values are the best from multiple tests
-
-            Entity a = _board.getEntity(xt, yt);
-            if(!a.collide(this))
-                return false;
-        }
-
-        return true;
-    }
-
-
     public void move(double xa, double ya) {
         if (xa > 0) _direction = 1;
         if (xa < 0) _direction = 3;
@@ -89,6 +73,22 @@ public class Bomber extends Entity {
         if (canMove(xa, 0)) {
             this.x += xa;
         }
+    }
+
+    public boolean canMove(double _x, double _y) {
+        System.out.println(x+" "+y+" canmove");
+        for (int c = 0; c < 4; c++) { //colision detection for each corner of the player
+            double xt = ((_x*2 + x) + c % 2 * 22) / Sprite.SCALED_SIZE; //divide with tiles size to pass to tile coordinate
+            double yt = ((_y*2 + y+32) + (c >> 1) * 24-26) / Sprite.SCALED_SIZE; //these values are the best from multiple tests
+            System.out.println(xt+" "+yt);
+            Entity a = _board.getEntity(xt, yt);
+            System.out.println(a);
+            System.out.println(a.collide(this));
+            if(!a.collide(this))
+                return false;
+        }
+
+        return true;
     }
 
     protected void animate() {

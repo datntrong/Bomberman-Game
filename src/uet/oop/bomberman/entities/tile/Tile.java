@@ -8,7 +8,9 @@ public abstract class Tile extends Entity {
 	
 	
 	public Tile(int x, int y, Sprite sprite) {
-		super(x,y,sprite.getFxImage());
+		this.x = x * Sprite.SCALED_SIZE;
+		this.y = y * Sprite.SCALED_SIZE;
+		this.img = sprite.getFxImage();
 	}
 
 	@Override

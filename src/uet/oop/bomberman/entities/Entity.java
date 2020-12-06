@@ -18,11 +18,7 @@ public abstract class Entity implements IRender {
     protected Image img;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
-    public Entity( int xUnit, int yUnit, Image img) {
-        this.x = xUnit * Sprite.SCALED_SIZE;
-        this.y = yUnit * Sprite.SCALED_SIZE;
-        this.img = img;
-    }
+
 
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
@@ -30,4 +26,8 @@ public abstract class Entity implements IRender {
     public abstract void update();
 
     public abstract boolean collide(Entity e);
+
+    public Image getImg() {
+        return img;
+    }
 }
