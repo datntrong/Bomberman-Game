@@ -11,6 +11,10 @@ public class Keyboard {
         this.scene = scene;
     }
 
+    public Keyboard() {
+
+    }
+
     public void update() {
         this.OnKeyPressed();
         this.OnKeyReleased();
