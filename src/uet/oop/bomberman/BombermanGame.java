@@ -12,6 +12,7 @@ import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
+import uet.oop.bomberman.sound.GameSound;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,14 +34,16 @@ public class BombermanGame extends Application {
 
     private static Keyboard _input;
     public static Board board;
+    private static GameSound gameSound;
     private GraphicsContext gc;
     private Canvas canvas;
 
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
 
-
     public static void main(String[] args) {
+        String s = "soundtrack";
+        gameSound.play(s);
         Application.launch(BombermanGame.class);
     }
 
