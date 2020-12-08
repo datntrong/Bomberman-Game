@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.mob.Mob;
 import uet.oop.bomberman.exceptions.LoadLevelException;
 import uet.oop.bomberman.graphics.IRender;
 import uet.oop.bomberman.input.Keyboard;
@@ -129,6 +130,10 @@ public class Board {
     }
 
     public void addBomber(Bomber e) {
+        _mobs.add(e);
+    }
+
+    public void addMob(Mob e) {
         _mobs.add(e);
     }
 

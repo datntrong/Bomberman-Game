@@ -43,7 +43,7 @@ public class BombermanGame extends Application {
 
     public static void main(String[] args) {
         String s = "soundtrack";
-        gameSound.play(s);
+        //gameSound.play(s);
         Application.launch(BombermanGame.class);
     }
 
@@ -81,26 +81,27 @@ public class BombermanGame extends Application {
 
     }
 
-    public void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall);
-                }
-                else {
-                    object = new Grass(i, j, Sprite.grass);
-                }
-                stillObjects.add(object);
-            }
-        }
-
-//        stillObjects.addAll(Arrays.asList(board._entities));
-    }
+//    public void createMap() {
+//        for (int i = 0; i < WIDTH; i++) {
+//            for (int j = 0; j < HEIGHT; j++) {
+//                Entity object;
+//                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
+//                    object = new Wall(i, j, Sprite.wall);
+//                }
+//                else {
+//                    object = new Grass(i, j, Sprite.grass);
+//                }
+//                stillObjects.add(object);
+//            }
+//        }
+//
+////        stillObjects.addAll(Arrays.asList(board._entities));
+//    }
 
     public void update() {
         _input.update();
         board._mobs.forEach(Entity::update);
+        board.updateMobs();
     }
 
     public void render() {
@@ -110,7 +111,11 @@ public class BombermanGame extends Application {
                 g.render(gc);
             }
         });
-        board._mobs.forEach(g -> g.render(gc));
+        board._mobs.forEach(g -> {
+            if (g != null) {
+                g.render(gc);
+            }
+        });
     }
 
     public static double getPlayerSpeed() {

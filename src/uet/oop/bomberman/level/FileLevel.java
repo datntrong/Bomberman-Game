@@ -5,6 +5,7 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomber;
 
 import uet.oop.bomberman.entities.LayeredEntity;
+import uet.oop.bomberman.entities.mob.enemy.*;
 import uet.oop.bomberman.entities.tile.Grass;
 
 import uet.oop.bomberman.entities.tile.Portal;
@@ -124,26 +125,26 @@ public class FileLevel extends Level {
 				_board.addEntitie(pos, new Grass(x, y, Sprite.grass) );
 				break;
 //			//Enemies
-//			case '1':
-//				_board.addMob( new Balloom(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, _board));
-//				_board.addEntitie(pos, new GrassTile(x, y, Sprite.grass) );
-//				break;
-//			case '2':
-//				_board.addMob( new Oneal(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, _board));
-//				_board.addEntitie(pos, new GrassTile(x, y, Sprite.grass) );
-//				break;
-//			case '3':
-//				_board.addMob( new Doll(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, _board));
-//				_board.addEntitie(pos, new GrassTile(x, y, Sprite.grass) );
-//				break;
-//			case '4':
-//				_board.addMob( new Minvo(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, _board));
-//				_board.addEntitie(pos, new GrassTile(x, y, Sprite.grass) );
-//				break;
-//			case '5':
-//				_board.addMob( new Kondoria(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, _board));
-//				_board.addEntitie(pos, new GrassTile(x, y, Sprite.grass) );
-//				break;
+			case '1':
+				_board.addMob( new Balloom(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Sprite.TILES_SIZE, _board));
+				_board.addEntitie(pos, new Grass(x, y, Sprite.grass) );
+				break;
+			case '2':
+				_board.addMob( new Oneal(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Sprite.TILES_SIZE, _board));
+				_board.addEntitie(pos, new Grass(x, y, Sprite.grass) );
+				break;
+			case '3':
+				_board.addMob( new Doll(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Sprite.TILES_SIZE, _board));
+				_board.addEntitie(pos, new Grass(x, y, Sprite.grass) );
+				break;
+			case '4':
+				_board.addMob( new Minvo(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Sprite.TILES_SIZE, _board));
+				_board.addEntitie(pos, new Grass(x, y, Sprite.grass) );
+				break;
+			case '5':
+				_board.addMob( new Kondoria(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Sprite.TILES_SIZE, _board));
+				_board.addEntitie(pos, new Grass(x, y, Sprite.grass) );
+				break;
 			default:
 				_board.addEntitie(pos, new Grass(x, y, Sprite.grass) );
 				break;
