@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
 
@@ -31,7 +32,7 @@ public class BombermanGame extends Application {
 
     private static Keyboard _input;
     public static Board board;
-    private GraphicsContext gc;
+    private static GraphicsContext gc;
     private Canvas canvas;
 
     private List<Entity> entities = new ArrayList<>();
@@ -63,8 +64,8 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                render();
                 update();
+                render();
             }
         };
         timer.start();
@@ -96,6 +97,9 @@ public class BombermanGame extends Application {
     public void update() {
         _input.update();
         board._mobs.forEach(Entity::update);
+        if(board._bombs != null) {
+            board._bombs.forEach(Bomb::update);
+        }
     }
 
     public void render() {
@@ -106,6 +110,7 @@ public class BombermanGame extends Application {
             }
         });
         board._mobs.forEach(g -> g.render(gc));
+        board._bombs.forEach(g -> g.render(gc));
     }
 
     public static double getPlayerSpeed() {
@@ -118,5 +123,21 @@ public class BombermanGame extends Application {
 
     public static Board getBoard() {
         return board;
+    }
+
+    public static int getBombRate() {
+        return bombRate;
+    }
+
+    public static int getBombRadius() {
+        return bombRadius;
+    }
+
+    public static void addBombRate(int i) {
+        bombRate += i;
+    }
+
+    public static GraphicsContext getGc() {
+        return gc;
     }
 }

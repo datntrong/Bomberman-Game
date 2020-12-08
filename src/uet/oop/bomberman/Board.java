@@ -6,6 +6,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.bomb.Bomb;
+import uet.oop.bomberman.entities.bomb.Explosion;
 import uet.oop.bomberman.exceptions.LoadLevelException;
 import uet.oop.bomberman.graphics.IRender;
 import uet.oop.bomberman.input.Keyboard;
@@ -23,6 +25,7 @@ public class Board {
 //    public Entity[] _entities;
     public List<Entity> _entities = new ArrayList<Entity>();
     public List<Entity> _mobs = new ArrayList<Entity>();
+    protected List<Bomb> _bombs = new ArrayList<Bomb>();
 
     //protected List<Bomber> _bombs = new ArrayList<Bomber>();
     //private List<Message> _messages = new ArrayList<Message>();
@@ -106,15 +109,15 @@ public class Board {
         }
     }
 
-    public Entity getEntity(double x, double y) {
+    public Entity getEntity(double x, double y, Entity e) {
 
         Entity res = null;
 
-//        res = getExplosionAt((int)x, (int)y);
-//        if( res != null) return res;
+        res = getExplosionAt((int)x, (int)y);
+        if( res != null) return res;
 //
-//        res = getBombAt(x, y);
-//        if( res != null) return res;
+        res = getBombAt(x, y);
+        if( res != null) return res;
 //
 //        res = getMobAtExcluding((int)x, (int)y, m);
 //        if( res != null) return res;
@@ -125,6 +128,7 @@ public class Board {
     }
 
     public Entity getEntityAt(double x, double y) {
+//        System.out.println((int) x + (int) y * _level.getWidth());
         return _entities.get((int) x + (int) y * _level.getWidth());
     }
 
@@ -132,4 +136,39 @@ public class Board {
         _mobs.add(e);
     }
 
+    public void addBomb(Bomb e) {
+        _bombs.add(e);
+    }
+
+    public List<Bomb> getBombs() {
+        return _bombs;
+    }
+
+    public Bomb getBombAt(double x, double y) {
+        Iterator<Bomb> bs = _bombs.iterator();
+        Bomb b;
+        while(bs.hasNext()) {
+            b = bs.next();
+            if(b.getX() == (int)x && b.getY() == (int)y)
+                return b;
+        }
+
+        return null;
+    }
+
+    public Explosion getExplosionAt(int x, int y) {
+        Iterator<Bomb> bs = _bombs.iterator();
+        Bomb b;
+        while(bs.hasNext()) {
+            b = bs.next();
+
+            Explosion e = b.explosionAt(x, y);
+            if(e != null) {
+                return e;
+            }
+
+        }
+
+        return null;
+    }
 }
