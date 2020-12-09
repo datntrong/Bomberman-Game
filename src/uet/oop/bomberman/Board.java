@@ -12,6 +12,8 @@ import uet.oop.bomberman.graphics.IRender;
 import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.FileLevel;
 import uet.oop.bomberman.level.Level;
+import uet.oop.bomberman.entities.bomb.Bomb;
+import uet.oop.bomberman.entities.bomb.Explosion;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,7 +27,7 @@ public class Board {
     public List<Entity> _entities = new ArrayList<Entity>();
     public List<Entity> _mobs = new ArrayList<Entity>();
 
-    //protected List<Bomber> _bombs = new ArrayList<Bomber>();
+    protected List<Bomb> _bombs = new ArrayList<Bomb>();
     //private List<Message> _messages = new ArrayList<Message>();
 
     protected Level _level;
@@ -34,7 +36,7 @@ public class Board {
     public Board(Keyboard input, Scene scene) {
         _input = input;
         _scene = scene;
-        changeLevel(1); //start in level 1
+        changeLevel(2); //start in level 1
     }
 
 
@@ -111,11 +113,11 @@ public class Board {
 
         Entity res = null;
 
-//        res = getExplosionAt((int)x, (int)y);
-//        if( res != null) return res;
-//
-//        res = getBombAt(x, y);
-//        if( res != null) return res;
+        res = getExplosionAt((int)x, (int)y);
+        if( res != null) return res;
+
+        res = getBombAt(x, y);
+        if( res != null) return res;
 //
 //        res = getMobAtExcluding((int)x, (int)y, m);
 //        if( res != null) return res;
@@ -135,6 +137,42 @@ public class Board {
 
     public void addMob(Mob e) {
         _mobs.add(e);
+    }
+
+    public void addBomb(Bomb e) {
+        _bombs.add(e);
+    }
+
+    public List<Bomb> getBombs() {
+        return _bombs;
+    }
+
+    public Bomb getBombAt(double x, double y) {
+        Iterator<Bomb> bs = _bombs.iterator();
+        Bomb b;
+        while(bs.hasNext()) {
+            b = bs.next();
+            if(b.getX() == (int)x && b.getY() == (int)y)
+                return b;
+        }
+
+        return null;
+    }
+
+    public Explosion getExplosionAt(int x, int y) {
+        Iterator<Bomb> bs = _bombs.iterator();
+        Bomb b;
+        while(bs.hasNext()) {
+            b = bs.next();
+
+            Explosion e = b.explosionAt(x, y);
+            if(e != null) {
+                return e;
+            }
+
+        }
+
+        return null;
     }
 
 }

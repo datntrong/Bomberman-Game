@@ -3,14 +3,16 @@ package uet.oop.bomberman.entities;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
 
+import java.util.Iterator;
 import java.util.List;
 
 
 public class Bomber extends Entity {
-    //    private List<Bomber> _bombs;
+        private List<Bomb> _bombs;
     protected int _direction = -1;
     protected boolean _moving = false;
     protected Sprite _sprite;
@@ -19,6 +21,7 @@ public class Bomber extends Entity {
     protected Board _board;
     protected int _animate = 0;
     protected final int MAX_ANIMATE = 60;
+    protected int _timeBetweenPutBombs = 0;
 
 
     public Bomber(int x, int y, Image img, Board board) {
@@ -27,16 +30,24 @@ public class Bomber extends Entity {
         this.img = img;
         _input = BombermanGame.getInput();
         _board = board;
+        _bombs = _board.getBombs();
     }
 
     @Override
     public void update() {
+
+        clearBombs();
+
+        if(_timeBetweenPutBombs < -7500) _timeBetweenPutBombs = 0; else _timeBetweenPutBombs--;
+
         animate();
 
         calculateMove();
 
         chooseSprite();
         img = _sprite.getFxImage();
+
+        detectPlaceBomb();
     }
 
     @Override
@@ -124,5 +135,38 @@ public class Bomber extends Entity {
                 }
                 break;
         }
+    }
+
+    private void detectPlaceBomb() {
+        if(_input.space && BombermanGame.getBombRate() > 0 && _timeBetweenPutBombs < 0) {
+//            System.out.println("OK");
+            placeBomb();
+            BombermanGame.addBombRate(-1);
+
+            _timeBetweenPutBombs = 30;
+        }
+    }
+
+    protected void placeBomb() {
+//        System.out.println(x+" B "+y);
+        double _x = x;
+        double _y = y;
+        Bomb b = new Bomb((int) _x, (int)_y , _board);
+        _board.addBomb(b);
+//        System.out.println(_board);
+    }
+
+    private void clearBombs() {
+        Iterator<Bomb> bs = _bombs.iterator();
+
+        Bomb b;
+        while(bs.hasNext()) {
+            b = bs.next();
+            if(b.isRemoved())  {
+                bs.remove();
+                BombermanGame.addBombRate(1);
+            }
+        }
+
     }
 }

@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.graphics.Sprite;
@@ -35,7 +36,7 @@ public class BombermanGame extends Application {
     private static Keyboard _input;
     public static Board board;
     private static GameSound gameSound;
-    private GraphicsContext gc;
+    private static GraphicsContext gc;
     private Canvas canvas;
 
     private List<Entity> entities = new ArrayList<>();
@@ -43,7 +44,7 @@ public class BombermanGame extends Application {
 
     public static void main(String[] args) {
         String s = "soundtrack";
-        //gameSound.play(s);
+        gameSound.play(s);
         Application.launch(BombermanGame.class);
     }
 
@@ -68,39 +69,22 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                render();
+
                 update();
+                render();
             }
         };
         timer.start();
 
-//        createMap();
-
-//        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-//        entities.add(bomberman);
 
     }
-
-//    public void createMap() {
-//        for (int i = 0; i < WIDTH; i++) {
-//            for (int j = 0; j < HEIGHT; j++) {
-//                Entity object;
-//                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-//                    object = new Wall(i, j, Sprite.wall);
-//                }
-//                else {
-//                    object = new Grass(i, j, Sprite.grass);
-//                }
-//                stillObjects.add(object);
-//            }
-//        }
-//
-////        stillObjects.addAll(Arrays.asList(board._entities));
-//    }
 
     public void update() {
         _input.update();
         board._mobs.forEach(Entity::update);
+        if(board._bombs != null) {
+            board._bombs.forEach(Bomb::update);
+        }
         board.updateMobs();
     }
 
@@ -116,6 +100,7 @@ public class BombermanGame extends Application {
                 g.render(gc);
             }
         });
+        board._bombs.forEach(g -> g.render(gc));
     }
 
     public static double getPlayerSpeed() {
@@ -128,5 +113,21 @@ public class BombermanGame extends Application {
 
     public static Board getBoard() {
         return board;
+    }
+
+    public static int getBombRate() {
+        return bombRate;
+    }
+
+    public static int getBombRadius() {
+        return bombRadius;
+    }
+
+    public static void addBombRate(int i) {
+        bombRate += i;
+    }
+
+    public static GraphicsContext getGc() {
+        return gc;
     }
 }

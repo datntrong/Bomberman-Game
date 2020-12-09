@@ -5,6 +5,7 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.mob.Mob;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.level.Coordinates;
 
 public abstract class Enemy extends Mob {
 
@@ -20,6 +21,7 @@ public abstract class Enemy extends Mob {
 	
 	protected int _finalAnimation = 30;
 	protected Sprite _deadSprite;
+	protected boolean _removed = false;
 	
 	public Enemy(int x, int y, Board board, Sprite dead, double speed, int points) {
 		super(x, y, board);
@@ -69,7 +71,7 @@ public abstract class Enemy extends Mob {
 
 //		screen.renderEntity((int)_x, (int)_y - _sprite.SIZE, this);
 		if(_sprite!=null){
-			gc.drawImage(_sprite.getFxImage(), x, y);
+			gc.drawImage(_sprite.getFxImage(), x, y-_sprite.SIZE);
 		}
 	}
 	
@@ -112,30 +114,25 @@ public abstract class Enemy extends Mob {
 	@Override
 	public boolean canMove(double x, double y) {
 		
-//		double xr = _x, yr = _y - 16; //subtract y to get more accurate results
-//
-//		//the thing is, subract 15 to 16 (sprite size), so if we add 1 tile we get the next pixel tile with this
-//		//we avoid the shaking inside tiles with the help of steps
-//		if(_direction == 0) { yr += _sprite.getSize() -1 ; xr += _sprite.getSize()/2; }
-//		if(_direction == 1) {yr += _sprite.getSize()/2; xr += 1;}
-//		if(_direction == 2) { xr += _sprite.getSize()/2; yr += 1;}
-//		if(_direction == 3) { xr += _sprite.getSize() -1; yr += _sprite.getSize()/2;}
-//
-//		int xx = Coordinates.pixelToTile(xr) +(int)x;
-//		int yy = Coordinates.pixelToTile(yr) +(int)y;
-//
-//		Entity a = _board.getEntity(xx, yy, this); //entity of the position we want to go
-//
-//		return a.collide(this);
+		double xr = this.x, yr = this.y - 16; //subtract y to get more accurate results
 
-		return true;
+		//the thing is, subract 15 to 16 (sprite size), so if we add 1 tile we get the next pixel tile with this
+		//we avoid the shaking inside tiles with the help of steps
+		if(_direction == 0) { yr += _sprite.getSize() -1 ; xr += _sprite.getSize()/2; }
+		if(_direction == 1) {yr += _sprite.getSize()/2; xr += 1;}
+		if(_direction == 2) { xr += _sprite.getSize()/2; yr += 1;}
+		if(_direction == 3) { xr += _sprite.getSize() -1; yr += _sprite.getSize()/2;}
+
+		int xx = Coordinates.pixelToTile(xr) +(int)x;
+		int yy = Coordinates.pixelToTile(yr) +(int)y;
+
+		Entity a = _board.getEntity(xx, yy); //entity of the position we want to go
+
+		return a.collide(this);
+
+
 	}
-	
-	/*
-	|--------------------------------------------------------------------------
-	| Mob Colide & Kill
-	|--------------------------------------------------------------------------
-	 */
+
 	@Override
 	public boolean collide(Entity e) {
 //		if(e instanceof DirectionalExplosion) {
@@ -175,4 +172,12 @@ public abstract class Enemy extends Mob {
 	}
 	
 	protected abstract void chooseSprite();
+
+	public void remove() {
+		_removed = true;
+	}
+
+	public boolean isRemoved() {
+		return _removed;
+	}
 }

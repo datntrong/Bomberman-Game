@@ -19,6 +19,8 @@ public abstract class Entity implements IRender {
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
 
+    protected boolean _removed = false;
+
 
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
@@ -30,4 +32,20 @@ public abstract class Entity implements IRender {
     public Image getImg() {
         return img;
     }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void remove() {
+        _removed = true;
+    }
+    public boolean isRemoved() {
+        return _removed;
+    }
+
 }
